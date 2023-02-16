@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.templatetags.static import static
 import json
 
-from .models import Product
+from .models import Product, Order, OrderItem
 
 
 def banners_list_api(request):
@@ -60,4 +60,18 @@ def product_list_api(request):
 def register_order(request):
     orders_info = json.loads(request.body.decode())
     print(orders_info)
+    order = Order.objects.create(
+        customer_name=orders_info['firstname'],
+        customer_lastname=orders_info['lastname'],
+        phone_number=orders_info['phonenumber'],
+        address=orders_info['address'],
+
+    )
+    print(order, type(order))
+    for item in orders_info['products']:
+        OrderItem.objects.get_or_create(
+            order=order,
+            product_id=item['product'],
+            quantity=item['quantity']
+        )
     return JsonResponse(orders_info)
