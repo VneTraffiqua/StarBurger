@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from .models import Product, Order, OrderItem
+from django.db.utils import IntegrityError
 
 
 def banners_list_api(request):
@@ -77,7 +78,7 @@ def register_order(request):
                     quantity=item['quantity']
                 )
         else:
-            content = {'error': 'list cannot be empty!'}
+            content = {'error': 'product list cannot be empty!'}
             return Response(content, status=status.HTTP_200_OK)
 
         return Response(orders_info, status=200)
@@ -86,4 +87,7 @@ def register_order(request):
         return Response(content, status=status.HTTP_200_OK)
     except KeyError:
         content = {'error': 'required fields not filled!'}
+        return Response(content, status=status.HTTP_200_OK)
+    except IntegrityError:
+        content = {'error': 'required fields cannot be empty!'}
         return Response(content, status=status.HTTP_200_OK)
