@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.templatetags.static import static
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework import status
 from .models import Product, Order, OrderItem
 
 
@@ -60,18 +61,29 @@ def product_list_api(request):
 @api_view(['POST'])
 def register_order(request):
     orders_info = request.data
-    order = Order.objects.create(
-        customer_name=orders_info['firstname'],
-        customer_lastname=orders_info['lastname'],
-        phone_number=orders_info['phonenumber'],
-        address=orders_info['address'],
+    try:
+        order = Order.objects.create(
+            customer_name=orders_info['firstname'],
+            customer_lastname=orders_info['lastname'],
+            phone_number=orders_info['phonenumber'],
+            address=orders_info['address'],
 
-    )
-    for item in orders_info['products']:
-        OrderItem.objects.get_or_create(
-            order=order,
-            product_id=item['product'],
-            quantity=item['quantity']
         )
+        if orders_info['products']:
+            for item in orders_info['products']:
+                OrderItem.objects.get_or_create(
+                    order=order,
+                    product_id=item['product'],
+                    quantity=item['quantity']
+                )
+        else:
+            content = {'error': 'list cannot be empty!'}
+            return Response(content, status=status.HTTP_200_OK)
 
-    return Response(orders_info, status=200)
+        return Response(orders_info, status=200)
+    except TypeError:
+        content = {'error': 'invalid data type!'}
+        return Response(content, status=status.HTTP_200_OK)
+    except KeyError:
+        content = {'error': 'required fields not filled!'}
+        return Response(content, status=status.HTTP_200_OK)
