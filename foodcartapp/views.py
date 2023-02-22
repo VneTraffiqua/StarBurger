@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.templatetags.static import static
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.serializers import ModelSerializer, ValidationError
 from rest_framework import status
 from .models import Product, Order, OrderItem
 from django.db.utils import IntegrityError
@@ -59,9 +60,34 @@ def product_list_api(request):
     })
 
 
+class OrderItemSerializer(ModelSerializer):
+    class Meta:
+        model = OrderItem
+        fields = ['product', 'quantity']
+
+
+class OrderSerializer(ModelSerializer):
+    items = OrderItemSerializer(many=True)
+
+    class Meta:
+        model = Order
+        fields = [
+            'customer_name',
+            'customer_lastname',
+            'phone_number',
+            'address',
+            'items'
+        ]
+
+
 @api_view(['POST'])
 def register_order(request):
+    serializer = OrderSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+
+    #переделать валидацию через сериалайзер, убрать сырые данные
     orders_info = request.data
+
     try:
         order = Order.objects.create(
             customer_name=orders_info['firstname'],
@@ -70,6 +96,7 @@ def register_order(request):
             address=orders_info['address'],
 
         )
+        check_class_object(order)
         if orders_info['products']:
             for item in orders_info['products']:
                 OrderItem.objects.get_or_create(
