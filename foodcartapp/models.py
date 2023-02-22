@@ -136,7 +136,10 @@ class Order(models.Model):
         null=False
     )
     phone_number = PhoneNumberField(
-        'Номер владельца', max_length=20, region='RU'
+        'Номер владельца',
+        max_length=20,
+        region='RU',
+        null=False
     )
     address = models.CharField(
         'Адрес', max_length=200,
