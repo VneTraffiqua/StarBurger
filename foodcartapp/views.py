@@ -98,5 +98,5 @@ def register_order(request):
     ]
     OrderItem.objects.bulk_create(products)
 
-    return Response({'application_id': order.id,})
+    return Response(serializer.data)
 
