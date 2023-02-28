@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.templatetags.static import static
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from rest_framework.serializers import ModelSerializer, ValidationError
+from rest_framework.serializers import ModelSerializer, ListSerializer
 from rest_framework import status
 from .models import Product, Order, OrderItem
 from django.db.utils import IntegrityError
@@ -67,16 +67,16 @@ class OrderItemSerializer(ModelSerializer):
 
 
 class OrderSerializer(ModelSerializer):
-    items = OrderItemSerializer(many=True)
+    products = OrderItemSerializer(many=True, allow_empty=False)
 
     class Meta:
         model = Order
         fields = [
-            'customer_name',
-            'customer_lastname',
-            'phone_number',
+            'firstname',
+            'lastname',
+            'phonenumber',
             'address',
-            'items'
+            'products'
         ]
 
 
@@ -85,36 +85,18 @@ def register_order(request):
     serializer = OrderSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
 
-    #переделать валидацию через сериалайзер, убрать сырые данные
-    orders_info = request.data
+    order = Order.objects.create(
+        firstname=serializer.validated_data['firstname'],
+        lastname=serializer.validated_data['lastname'],
+        phonenumber=serializer.validated_data['phonenumber'],
+        address=serializer.validated_data['address'],
 
-    try:
-        order = Order.objects.create(
-            customer_name=orders_info['firstname'],
-            customer_lastname=orders_info['lastname'],
-            phone_number=orders_info['phonenumber'],
-            address=orders_info['address'],
+    )
+    products_fields = serializer.validated_data['products']
+    products = [
+        OrderItem(order=order, **products) for products in products_fields
+    ]
+    OrderItem.objects.bulk_create(products)
 
-        )
-        check_class_object(order)
-        if orders_info['products']:
-            for item in orders_info['products']:
-                OrderItem.objects.get_or_create(
-                    order=order,
-                    product_id=item['product'],
-                    quantity=item['quantity']
-                )
-        else:
-            content = {'error': 'product list cannot be empty!'}
-            return Response(content, status=status.HTTP_200_OK)
+    return Response({'application_id': order.id,})
 
-        return Response(orders_info, status=200)
-    except TypeError:
-        content = {'error': 'invalid data type!'}
-        return Response(content, status=status.HTTP_200_OK)
-    except KeyError:
-        content = {'error': 'required fields not filled!'}
-        return Response(content, status=status.HTTP_200_OK)
-    except IntegrityError:
-        content = {'error': 'required fields cannot be empty!'}
-        return Response(content, status=status.HTTP_200_OK)
