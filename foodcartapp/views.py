@@ -2,10 +2,11 @@ from django.http import JsonResponse
 from django.templatetags.static import static
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from rest_framework.serializers import ModelSerializer, ListSerializer
-from rest_framework import status
+from rest_framework.serializers import ModelSerializer
+
 from .models import Product, Order, OrderItem
-from django.db.utils import IntegrityError
+from django.db import models
+
 
 
 def banners_list_api(request):
