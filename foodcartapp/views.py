@@ -97,6 +97,9 @@ def register_order(request):
     products = [
         OrderItem(order=order, **products) for products in products_fields
     ]
+    for product in products:
+        product.price = product.product.price
+    print(products)
     OrderItem.objects.bulk_create(products)
 
     return Response(serializer.data)

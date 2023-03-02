@@ -6,7 +6,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 class OrderQuerySet(models.QuerySet):
     def get_order_value(self):
         orders = self.annotate(total_sum=models.Sum(
-            models.F('products__quantity') * models.F('products__product__price')
+            models.F('products__quantity') * models.F('products__price')
         ))
         return orders
 
@@ -175,6 +175,11 @@ class OrderItem(models.Model):
         on_delete=models.CASCADE,
     )
     quantity = models.PositiveIntegerField(default=1)
+    price = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        null=True
+    )
 
     def __str__(self):
         return self.product.name
