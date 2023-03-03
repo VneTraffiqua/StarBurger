@@ -156,7 +156,7 @@ cython_debug/
 .upm/
 images/
 media/
-__pycache__/
+
 assets/
 .git/
 .parcel-cache/
