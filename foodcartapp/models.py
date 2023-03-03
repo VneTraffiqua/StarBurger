@@ -176,9 +176,11 @@ class OrderItem(models.Model):
     )
     quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(
+        verbose_name='Цена',
         max_digits=6,
         decimal_places=2,
-        null=True
+        null=True,
+        validators=[MinValueValidator(0)]
     )
 
     def __str__(self):

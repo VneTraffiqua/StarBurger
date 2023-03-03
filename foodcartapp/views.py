@@ -3,10 +3,8 @@ from django.templatetags.static import static
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.serializers import ModelSerializer
-
+from django.db import transaction
 from .models import Product, Order, OrderItem
-from django.db import models
-
 
 
 def banners_list_api(request):
@@ -64,7 +62,7 @@ def product_list_api(request):
 class OrderItemSerializer(ModelSerializer):
     class Meta:
         model = OrderItem
-        fields = ['product', 'quantity']
+        fields = ['product', 'quantity', 'price']
 
 
 class OrderSerializer(ModelSerializer):
@@ -82,6 +80,7 @@ class OrderSerializer(ModelSerializer):
 
 
 @api_view(['POST'])
+@transaction.atomic
 def register_order(request):
     serializer = OrderSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
@@ -99,7 +98,7 @@ def register_order(request):
     ]
     for product in products:
         product.price = product.product.price
-    print(products)
+
     OrderItem.objects.bulk_create(products)
 
     return Response(serializer.data)
