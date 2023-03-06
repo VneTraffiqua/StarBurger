@@ -138,7 +138,8 @@ class Order(models.Model):
         'Статус',
         choices=CHOICES,
         default='Необработан',
-        max_length=15
+        max_length=15,
+        db_index=True
     )
     firstname = models.CharField(
         'Имя',
