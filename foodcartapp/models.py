@@ -133,6 +133,13 @@ class RestaurantMenuItem(models.Model):
 
 
 class Order(models.Model):
+    CHOICES = (('Обработан', 'Обработан'), ('Необработан', 'Необработан'))
+    status = models.CharField(
+        'Статус',
+        choices=CHOICES,
+        default='Необработан',
+        max_length=15
+    )
     firstname = models.CharField(
         'Имя',
         max_length=50,
