@@ -122,7 +122,7 @@ class OrderAdmin(admin.ModelAdmin):
         else:
             return res
 
-    list_display = ['id', 'firstname', 'phonenumber', 'address']
+    list_display = ['id', 'status', 'firstname', 'phonenumber', 'address']
     inlines = [OrdersItemInline]
 
 
