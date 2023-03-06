@@ -142,6 +142,16 @@ class Order(models.Model):
         max_length=15,
         db_index=True
     )
+    PAYMENT_METHOD = (
+        ('Наличностью', 'Наличностью'), ('Электронно', 'Электронно')
+    )
+    payment = models.CharField(
+        'Способ оплаты',
+        choices=PAYMENT_METHOD,
+        default='Наличностью',
+        max_length=15,
+        db_index=True
+    )
     firstname = models.CharField(
         'Имя',
         max_length=50,
