@@ -160,6 +160,12 @@ class Order(models.Model):
         'Адрес', max_length=200,
         null=False
     )
+    comment = models.CharField(
+        'Комментарий',
+        max_length=200,
+        blank=True,
+        default=''
+    )
     objects = OrderQuerySet.as_manager()
 
     class Meta:
