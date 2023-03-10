@@ -3,11 +3,10 @@ from django.shortcuts import redirect, render
 from django.views import View
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import user_passes_test
-
+from django.db.models import Prefetch
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import views as auth_views
-
-from foodcartapp.models import Order
+from foodcartapp.models import Order, RestaurantMenuItem, OrderItem
 from foodcartapp.models import Product, Restaurant
 
 
@@ -92,10 +91,32 @@ def view_restaurants(request):
 
 @user_passes_test(is_manager, login_url='restaurateur:login')
 def view_orders(request):
-    order_item = Order.objects.filter(
-        status='Необработан'
+    orders = Order.objects.prefetch_related(
+        Prefetch(
+            'products', to_attr='order_products'
+        ),
+        Prefetch(
+            'order_products__product__menu_items',
+            queryset=RestaurantMenuItem.objects.select_related('restaurant'),
+            to_attr='rests'
+        ),
+    ).filter(
+        status__in=('Необработан', 'Готовится')
     ).order_by('-id').get_order_value()
+    for order in orders:
+        restaurants = []
+        for product in order.order_products:
+            rest_list = []
+            [rest_list.append(rest.restaurant.name) for rest in product.product.rests if rest.availability]
+            restaurants.append(set(rest_list))
+        order_rest = restaurants[0]
+        for rest in restaurants:
+            order_rest = order_rest.intersection(rest)
+        order.rest = order_rest
+        if order.restaurant:
+            order.status = 'Готовится'
+            order.save()
     return render(request, template_name='order_items.html', context={
-        'order_items': order_item,
+        'order_items': orders,
         'currentUrl': request.path
     })

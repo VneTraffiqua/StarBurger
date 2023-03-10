@@ -134,7 +134,11 @@ class RestaurantMenuItem(models.Model):
 
 
 class Order(models.Model):
-    CHOICES = (('Обработан', 'Обработан'), ('Необработан', 'Необработан'))
+    CHOICES = (
+        ('Обработан', 'Обработан'),
+        ('Необработан', 'Необработан'),
+        ('Готовится', 'Готовится')
+    )
     status = models.CharField(
         'Статус',
         choices=CHOICES,
@@ -171,6 +175,14 @@ class Order(models.Model):
     address = models.CharField(
         'Адрес', max_length=200,
         null=False
+    )
+    restaurant = models.ForeignKey(
+        Restaurant,
+        related_name='restaurant',
+        verbose_name="ресторан",
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
     )
     comment = models.CharField(
         'Комментарий',
