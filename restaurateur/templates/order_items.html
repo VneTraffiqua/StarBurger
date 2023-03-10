@@ -40,7 +40,7 @@
             Готовит {{ item.restaurant }}
           {% else %}
             {% if item.rest %}
-              <details><summary>Может быть приготовлен ресторанами:</summary><p>{% for rest in item.rest %}<li>{{rest}}</li>{% endfor %}</p></details>
+              <details><summary>Может быть приготовлен ресторанами:</summary><p>{% for key, value in item.rest.items %}<li>{{key}} - {{value}} км.</li>{% endfor %}</p></details>
             {% else %}
               Ошибка определения координат
             {% endif %}

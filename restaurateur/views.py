@@ -6,8 +6,10 @@ from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Prefetch
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import views as auth_views
-from foodcartapp.models import Order, RestaurantMenuItem, OrderItem
+from foodcartapp.models import Order, RestaurantMenuItem
 from foodcartapp.models import Product, Restaurant
+from geopy.distance import distance
+from operator import itemgetter
 
 
 class Login(forms.Form):
@@ -105,14 +107,24 @@ def view_orders(request):
     ).order_by('-id').get_order_value()
     for order in orders:
         restaurants = []
+        restaurants_coordinates = {}
         for product in order.order_products:
             rest_list = []
-            [rest_list.append(rest.restaurant.name) for rest in product.product.rests if rest.availability]
+            for rest in product.product.rests:
+                if rest.availability:
+                    rest_list.append(rest.restaurant.name)
+                    restaurants_coordinates[rest.restaurant.name] = (rest.restaurant.lat, rest.restaurant.lon)
             restaurants.append(set(rest_list))
         order_rest = restaurants[0]
         for rest in restaurants:
             order_rest = order_rest.intersection(rest)
-        order.rest = order_rest
+        order.rest = list(order_rest)
+        restaurants_distance = {}
+        for rest in list(order_rest):
+            restaurants_distance[rest] = restaurants_coordinates.pop(rest)
+        for rest in restaurants_distance.keys():
+            restaurants_distance[rest] = distance((order.lat, order.lon), restaurants_distance[rest]).km
+        order.rest = dict(sorted(restaurants_distance.items(), key=itemgetter(1)))
         if order.restaurant:
             order.status = 'Готовится'
             order.save()
