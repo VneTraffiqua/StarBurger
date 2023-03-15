@@ -5,10 +5,10 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import views as auth_views
-from foodcartapp.models import Order, RestaurantMenuItem
-from foodcartapp.models import Product, Restaurant
+from foodcartapp.models import Order, Product, Restaurant
 from geopy.distance import distance
 from operator import itemgetter
+from places_coord import places_coord
 
 
 class Login(forms.Form):
@@ -113,7 +113,10 @@ def view_orders(request):
         for rest in list(order_rest):
             restaurants_distance[rest] = restaurants_coordinates.pop(rest)
         for rest in restaurants_distance.keys():
-            restaurants_distance[rest] = distance((order.lat, order.lon), restaurants_distance[rest]).km
+            restaurants_distance[rest] = distance(
+                (places_coord.add_place(order.address)),
+                restaurants_distance[rest]
+            ).km
         order.rest = dict(sorted(restaurants_distance.items(), key=itemgetter(1)))
         if order.order_restaurant:
             order.status = 'Готовится'

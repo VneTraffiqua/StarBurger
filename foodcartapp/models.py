@@ -37,8 +37,8 @@ class Restaurant(models.Model):
         max_length=100,
         blank=True,
     )
-    lat = models.FloatField(verbose_name='Широта', default=37.617698)
-    lon = models.FloatField(verbose_name='Долгота', default=55.755864)
+    lat = models.FloatField(verbose_name='Широта', null=True, blank=True)
+    lon = models.FloatField(verbose_name='Долгота', null=True, blank=True)
     contact_phone = models.CharField(
         'контактный телефон',
         max_length=50,
