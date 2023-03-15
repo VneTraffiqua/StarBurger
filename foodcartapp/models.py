@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import MinValueValidator
 from phonenumber_field.modelfields import PhoneNumberField
+from django.db.models import Prefetch
 
 
 class OrderQuerySet(models.QuerySet):
@@ -10,6 +11,20 @@ class OrderQuerySet(models.QuerySet):
             models.F('products__quantity') * models.F('products__price')
         ))
         return orders
+
+    def get_order_params(self):
+        order_params = self.prefetch_related(
+            Prefetch(
+                'products', to_attr='order_products'
+            ),
+            Prefetch(
+                'order_products__product__menu_items',
+                queryset=RestaurantMenuItem.objects.select_related(
+                    'restaurant'),
+                to_attr='rests'
+            ),
+        ).select_related('order_restaurant')
+        return order_params
 
 
 class Restaurant(models.Model):

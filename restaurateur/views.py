@@ -3,7 +3,6 @@ from django.shortcuts import redirect, render
 from django.views import View
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import user_passes_test
-from django.db.models import Prefetch
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import views as auth_views
 from foodcartapp.models import Order, RestaurantMenuItem
@@ -93,18 +92,9 @@ def view_restaurants(request):
 
 @user_passes_test(is_manager, login_url='restaurateur:login')
 def view_orders(request):
-    orders = Order.objects.prefetch_related(
-        Prefetch(
-            'products', to_attr='order_products'
-        ),
-        Prefetch(
-            'order_products__product__menu_items',
-            queryset=RestaurantMenuItem.objects.select_related('restaurant'),
-            to_attr='rests'
-        ),
-    ).filter(
-        status__in=('Необработан', 'Готовится')
-    ).order_by('-id').get_order_value()
+    orders = Order.objects.get_order_params().get_order_value().filter(
+            status__in=('Необработан', 'Готовится')
+        ).order_by('-id')
     for order in orders:
         restaurants = []
         restaurants_coordinates = {}
