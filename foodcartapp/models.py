@@ -177,8 +177,8 @@ class Order(models.Model):
         'Адрес', max_length=200,
         null=False
     )
-    lat = models.FloatField(verbose_name='Широта', default=37.617698)
-    lon = models.FloatField(verbose_name='Долгота', default=55.755864)
+    lat = models.FloatField(verbose_name='Широта', null=True)
+    lon = models.FloatField(verbose_name='Долгота', null=True)
     restaurant = models.ForeignKey(
         Restaurant,
         related_name='restaurant',
