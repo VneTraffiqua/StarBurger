@@ -125,7 +125,7 @@ def view_orders(request):
         for rest in restaurants_distance.keys():
             restaurants_distance[rest] = distance((order.lat, order.lon), restaurants_distance[rest]).km
         order.rest = dict(sorted(restaurants_distance.items(), key=itemgetter(1)))
-        if order.restaurant:
+        if order.order_restaurant:
             order.status = 'Готовится'
             order.save()
     return render(request, template_name='order_items.html', context={

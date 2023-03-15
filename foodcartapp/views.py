@@ -106,14 +106,14 @@ def register_order(request):
     env.read_env()
     serializer = OrderSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
-    lat, lon = fetch_coordinates(env('YANDEX_TOKEN'), serializer.validated_data['address'])
+    # lat, lon = fetch_coordinates(env('YANDEX_TOKEN'), serializer.validated_data['address'])
     order = Order.objects.create(
         firstname=serializer.validated_data['firstname'],
         lastname=serializer.validated_data['lastname'],
         phonenumber=serializer.validated_data['phonenumber'],
         address=serializer.validated_data['address'],
-        lat=lat,
-        lon=lon
+        # lat=lat,
+        # lon=lon
 
     )
     products_fields = serializer.validated_data['products']

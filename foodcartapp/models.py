@@ -177,9 +177,9 @@ class Order(models.Model):
         'Адрес', max_length=200,
         null=False
     )
-    lat = models.FloatField(verbose_name='Широта', null=True)
-    lon = models.FloatField(verbose_name='Долгота', null=True)
-    restaurant = models.ForeignKey(
+    lat = models.FloatField(verbose_name='Широта', null=True, blank=True)
+    lon = models.FloatField(verbose_name='Долгота', null=True, blank=True)
+    order_restaurant = models.ForeignKey(
         Restaurant,
         related_name='restaurant',
         verbose_name="ресторан",
@@ -187,7 +187,7 @@ class Order(models.Model):
         blank=True,
         null=True
     )
-    comment = models.CharField(
+    comment = models.TextField(
         'Комментарий',
         max_length=200,
         blank=True,
