@@ -229,7 +229,10 @@ class OrderItem(models.Model):
         related_name='order_items',
         on_delete=models.CASCADE,
     )
-    quantity = models.PositiveIntegerField(default=1)
+    quantity = models.PositiveIntegerField(
+        default=1,
+        validators=[MinValueValidator(1)]
+    )
     price = models.DecimalField(
         verbose_name='Цена',
         max_digits=6,
