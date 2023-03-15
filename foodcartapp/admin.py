@@ -126,6 +126,3 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = [OrdersItemInline]
 
 
-# @admin.register(OrderItem)
-# class OrderItemAdmin(admin.ModelAdmin):
-#     pass
