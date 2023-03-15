@@ -198,7 +198,7 @@ class Order(models.Model):
         default=timezone.now,
         db_index=True
     )
-    calleded_at = models.DateTimeField(
+    called_at = models.DateTimeField(
         'Звонили',
         blank=True,
         null=True
