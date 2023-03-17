@@ -8,7 +8,7 @@ from django.contrib.auth import views as auth_views
 from foodcartapp.models import Order, Product, Restaurant
 from geopy.distance import distance
 from operator import itemgetter
-from places import places_coord
+from places import places_coord, models
 
 
 class Login(forms.Form):
@@ -92,6 +92,7 @@ def view_restaurants(request):
 
 @user_passes_test(is_manager, login_url='restaurateur:login')
 def view_orders(request):
+    addresses = models.Place.objects.all()
     orders = Order.objects.get_order_params().get_order_value().filter(
             status__in=('Необработан', 'Готовится')
         ).order_by('-id')
@@ -117,21 +118,16 @@ def view_orders(request):
         restaurants_distance = {}  # Determine the distance to each restaurant
         for rest in list(order_rest):
             restaurants_distance[rest] = restaurants_coordinates.pop(rest)
-        print(order.address)
-        print(order.lon, order.lat)
         for rest in restaurants_distance.keys():
-            if order.lon:
+            for place in addresses:
+                if order.address == place.address:
                     restaurants_distance[rest] = distance(
-                        (order.lat, order.lon),
-                        restaurants_distance[rest]).km
-            else:
-                restaurants_distance[rest] = distance(
-                    (places_coord.add_place(order.address)),
-                    restaurants_distance[rest]
-                ).km
+                        (place.lat, place.lon),
+                        restaurants_distance[rest]
+                    ).km
         order.rest = dict(sorted(restaurants_distance.items(), key=itemgetter(1)))
 
-        if order.order_restaurant:  # Changed order status when a restaurant is selected
+        if order.status == 'Необработан' and order.order_restaurant:  # Changed order status when a restaurant is selected
             order.status = 'Готовится'
             order.save()
     return render(request, template_name='order_items.html', context={
