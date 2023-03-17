@@ -31,11 +31,12 @@ def add_place(address):
             place.save()
             return place.lat, place.lon
         else:
-            place.lat = place.lon = None
-            place.update_at = timezone.now()
-            place.save()
-            return place.lat, place.lon
-    except (requests.exceptions.RequestException, requests.exceptions.HTTPError):
+            return RuntimeError
+    except (
+            requests.exceptions.RequestException,
+            requests.exceptions.HTTPError,
+            RuntimeError
+    ):
         place.lat = place.lon = None
         place.update_at = timezone.now()
         place.save()
