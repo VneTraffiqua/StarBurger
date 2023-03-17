@@ -2,6 +2,7 @@ import requests
 from places.models import Place
 from environs import Env
 from django.utils import timezone
+from star_burger.settings import YANDEX_TOKEN
 
 
 def fetch_coordinates(apikey, address):
@@ -25,17 +26,15 @@ def fetch_coordinates(apikey, address):
 def add_place(address):
     place, _ = Place.objects.get_or_create(address=address)
     try:
-        env = Env()
-        env.read_env()
-        place.lat, place.lon = fetch_coordinates(env('YANDEX_TOKEN'), address)
+        place.lat, place.lon = fetch_coordinates(YANDEX_TOKEN, address)
         if place.lat and place.lon:
             place.save()
             return place.lat, place.lon
-        # else:
-        #     place.lat = place.lon = None
-        #     place.update_at = timezone.now()
-        #     place.save()
-        #     return place.lat, place.lon
+        else:
+            place.lat = place.lon = None
+            place.update_at = timezone.now()
+            place.save()
+            return place.lat, place.lon
     except (requests.exceptions.RequestException, requests.exceptions.HTTPError):
         place.lat = place.lon = None
         place.update_at = timezone.now()
