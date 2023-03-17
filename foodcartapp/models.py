@@ -197,7 +197,7 @@ class Order(models.Model):
     order_restaurant = models.ForeignKey(
         Restaurant,
         related_name='restaurant',
-        verbose_name="ресторан",
+        verbose_name="Выбранный ресторан",
         on_delete=models.CASCADE,
         blank=True,
         null=True
@@ -206,7 +206,6 @@ class Order(models.Model):
         'Комментарий',
         max_length=200,
         blank=True,
-        default=''
     )
     registered_at = models.DateTimeField(
         'Зарегистрирован',
