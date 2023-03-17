@@ -24,8 +24,8 @@ def fetch_coordinates(apikey, address):
 
 def add_place(address):
     place, created = Place.objects.get_or_create(address=address)
-    if not created:
-        return place.lat, place.lon
+    # if created:
+    #     return place.lat, place.lon
     try:
         place.lat, place.lon = fetch_coordinates(YANDEX_TOKEN, address)
         place.update_at = timezone.now()
