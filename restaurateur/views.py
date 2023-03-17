@@ -95,21 +95,26 @@ def view_orders(request):
     orders = Order.objects.get_order_params().get_order_value().filter(
             status__in=('Необработан', 'Готовится')
         ).order_by('-id')
+
     for order in orders:
         restaurants = []
         restaurants_coordinates = {}
+
         for product in order.order_products:
             rest_list = []
-            for rest in product.product.rests:
+
+            for rest in product.product.rests: # Finding which restaurant can cook the product
                 if rest.availability:
                     rest_list.append(rest.restaurant.name)
                     restaurants_coordinates[rest.restaurant.name] = (rest.restaurant.lat, rest.restaurant.lon)
             restaurants.append(set(rest_list))
-        order_rest = restaurants[0]
+
+        order_rest = restaurants[0]  # Determine the restaurant that will be can cook to prepare the entire order
         for rest in restaurants:
             order_rest = order_rest.intersection(rest)
         order.rest = list(order_rest)
-        restaurants_distance = {}
+
+        restaurants_distance = {}  # Determine the distance to each restaurant
         for rest in list(order_rest):
             restaurants_distance[rest] = restaurants_coordinates.pop(rest)
         for rest in restaurants_distance.keys():
@@ -118,7 +123,8 @@ def view_orders(request):
                 restaurants_distance[rest]
             ).km
         order.rest = dict(sorted(restaurants_distance.items(), key=itemgetter(1)))
-        if order.order_restaurant:
+
+        if order.order_restaurant:  # Changed order status when a restaurant is selected
             order.status = 'Готовится'
             order.save()
     return render(request, template_name='order_items.html', context={
