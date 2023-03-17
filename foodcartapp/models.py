@@ -250,6 +250,7 @@ class OrderItem(models.Model):
         verbose_name='Цена',
         max_digits=6,
         decimal_places=2,
+        null=True,
         validators=[MinValueValidator(0)]
     )
 
