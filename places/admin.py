@@ -1,5 +1,5 @@
 from django.contrib import admin
-from places_coord.models import Place
+from places.models import Place
 
 
 @admin.register(Place)

@@ -1,5 +1,5 @@
 import requests
-from places_coord.models import Place
+from places.models import Place
 from environs import Env
 from django.utils import timezone
 
@@ -31,11 +31,11 @@ def add_place(address):
         if place.lat and place.lon:
             place.save()
             return place.lat, place.lon
-        else:
-            place.lat = place.lon = None
-            place.update_at = timezone.now()
-            place.save()
-            return place.lat, place.lon
+        # else:
+        #     place.lat = place.lon = None
+        #     place.update_at = timezone.now()
+        #     place.save()
+        #     return place.lat, place.lon
     except (requests.exceptions.RequestException, requests.exceptions.HTTPError):
         place.lat = place.lon = None
         place.update_at = timezone.now()

@@ -8,7 +8,7 @@ from django.contrib.auth import views as auth_views
 from foodcartapp.models import Order, Product, Restaurant
 from geopy.distance import distance
 from operator import itemgetter
-from places_coord import places_coord
+from places import places_coord
 
 
 class Login(forms.Form):

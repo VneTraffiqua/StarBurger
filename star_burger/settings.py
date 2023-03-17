@@ -1,7 +1,5 @@
 import os
-
 import dj_database_url
-
 from environs import Env
 
 
@@ -29,7 +27,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'phonenumber_field',
     'rest_framework',
-    'places_coord'
+    'places'
 ]
 
 MIDDLEWARE = [

@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from django.db import transaction
 from .models import Product, Order, OrderItem
 from .serializers import OrderSerializer
-from places_coord import places_coord
+from places import places_coord
 from environs import Env
 
 
