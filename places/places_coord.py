@@ -1,6 +1,5 @@
 import requests
 from places.models import Place
-from environs import Env
 from django.utils import timezone
 from star_burger.settings import YANDEX_TOKEN
 
@@ -24,9 +23,12 @@ def fetch_coordinates(apikey, address):
 
 
 def add_place(address):
-    place, _ = Place.objects.get_or_create(address=address)
+    place, created = Place.objects.get_or_create(address=address)
+    if not created:
+        return place.lat, place.lon
     try:
         place.lat, place.lon = fetch_coordinates(YANDEX_TOKEN, address)
+        place.update_at = timezone.now()
         if place.lat and place.lon:
             place.save()
             return place.lat, place.lon
