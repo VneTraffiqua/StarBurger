@@ -117,11 +117,18 @@ def view_orders(request):
         restaurants_distance = {}  # Determine the distance to each restaurant
         for rest in list(order_rest):
             restaurants_distance[rest] = restaurants_coordinates.pop(rest)
+        print(order.address)
+        print(order.lon, order.lat)
         for rest in restaurants_distance.keys():
-            restaurants_distance[rest] = distance(
-                (places_coord.add_place(order.address)),
-                restaurants_distance[rest]
-            ).km
+            if order.lon:
+                    restaurants_distance[rest] = distance(
+                        (order.lat, order.lon),
+                        restaurants_distance[rest]).km
+            else:
+                restaurants_distance[rest] = distance(
+                    (places_coord.add_place(order.address)),
+                    restaurants_distance[rest]
+                ).km
         order.rest = dict(sorted(restaurants_distance.items(), key=itemgetter(1)))
 
         if order.order_restaurant:  # Changed order status when a restaurant is selected
