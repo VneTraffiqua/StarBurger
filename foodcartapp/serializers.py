@@ -1,11 +1,12 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, IntegerField
 from .models import Order, OrderItem
 
 
 class OrderItemSerializer(ModelSerializer):
+    price = IntegerField(required=False)
     class Meta:
         model = OrderItem
-        fields = ['product', 'quantity']
+        fields = ['product', 'quantity', 'price']
 
 
 class OrderSerializer(ModelSerializer):
