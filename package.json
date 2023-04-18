@@ -13,8 +13,5 @@
   "devDependencies": {
     "@babel/core": "^7.17.8",
     "process": "^0.11.10"
-  },
-  "process": {
-       "global": "{}"
-   }
+  }
 }
