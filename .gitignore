@@ -2,7 +2,6 @@
 __pycache__/
 *.py[cod]
 *$py.class
-node_modules/
 # C extensions
 *.so
 
@@ -59,7 +58,6 @@ cover/
 # Django stuff:
 *.log
 local_settings.py
-db.sqlite3
 db.sqlite3-journal
 
 # Flask stuff:
@@ -159,5 +157,4 @@ media/
 
 assets/
 .git/
-.parcel-cache/
-package-lock.json
+
