@@ -14,7 +14,7 @@ YANDEX_TOKEN = env('YANDEX_TOKEN')
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env.bool('DEBUG', False)
 
-ALLOWED_HOSTS = ['starburger-vne.herokuapp.com', '127.0.0.1', 'localhost'] # env.list('ALLOWED_HOSTS', ['127.0.0.1', 'localhost', 'starburger-vne.herokuapp.com'])
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', ['127.0.0.1', 'localhost'])
 
 INSTALLED_APPS = [
     'foodcartapp.apps.FoodcartappConfig',
@@ -40,7 +40,15 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
 ]
+
+ROLLBAR = {
+    'access_token': 'f00954e78b284542ba659d13fbaf3096',
+    'environment': 'development' if DEBUG else 'production',
+    'code_version': '1.0',
+    'root': BASE_DIR,
+}
 
 ROOT_URLCONF = 'star_burger.urls'
 
@@ -116,7 +124,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 INTERNAL_IPS = [
-    '127.0.0.1', 'starburger-vne.herokuapp.com'
+    '127.0.0.1',
 ]
 
 
