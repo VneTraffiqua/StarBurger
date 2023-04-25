@@ -1,6 +1,8 @@
 import os
 import dj_database_url
 from environs import Env
+import psycopg2
+import django
 
 
 env = Env()
@@ -44,7 +46,7 @@ MIDDLEWARE = [
 ]
 
 ROLLBAR = {
-    'access_token': 'f00954e78b284542ba659d13fbaf3096',
+    'access_token': env('ROLLBAR_TOKEN'),
     'environment': 'development' if DEBUG else 'production',
     'code_version': '1.0',
     'root': BASE_DIR,
