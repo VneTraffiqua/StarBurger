@@ -159,3 +159,4 @@ assets/
 .git/
 node_modules/
 .parcel-cache/
+staticfiles/
