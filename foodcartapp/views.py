@@ -11,7 +11,7 @@ from environs import Env
 
 def banners_list_api(request):
     # FIXME move data to db?
-    return JsonResponse([
+    return JsonResponse([ 
         {
             'title': 'Burger',
             'src': static('burger.jpg'),

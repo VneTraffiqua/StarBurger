@@ -2,8 +2,6 @@ import os
 import dj_database_url
 from environs import Env
 import psycopg2
-import django
-
 
 env = Env()
 env.read_env()
@@ -16,7 +14,7 @@ YANDEX_TOKEN = env('YANDEX_TOKEN')
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env.bool('DEBUG', False)
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', ['127.0.0.1', 'localhost'])
+ALLOWED_HOSTS = ['burger-em.online', 'burger-em.ru','143.244.206.73', '64.226.99.16', '127.0.0.1', 'localhost'] # env.list('ALLOWED_HOSTS', ['127.0.0.1', 'localhost', 'starburger-vne.herokuapp.com'])
 
 INSTALLED_APPS = [
     'foodcartapp.apps.FoodcartappConfig',
@@ -42,7 +40,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
+    'rollbar.contrib.django.middleware.RollbarNotifierMiddlewareExcluding404'
+
 ]
 
 ROLLBAR = {
@@ -68,6 +67,13 @@ DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.logging.LoggingPanel',
     'debug_toolbar.panels.redirects.RedirectsPanel',
 ]
+
+ROLLBAR = {
+    'access_token': env('ROLLBAR_TOKEN'),
+    'environment': 'development' if DEBUG else 'production',
+    'branch': 'master',
+    'root': BASE_DIR,
+}
 
 TEMPLATES = [
     {
