@@ -1,7 +1,7 @@
 import os
 import dj_database_url
 from environs import Env
-
+import psycopg2
 
 env = Env()
 env.read_env()
@@ -14,7 +14,7 @@ YANDEX_TOKEN = env('YANDEX_TOKEN')
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env.bool('DEBUG', False)
 
-ALLOWED_HOSTS = ['starburger-vne.herokuapp.com', '127.0.0.1', 'localhost'] # env.list('ALLOWED_HOSTS', ['127.0.0.1', 'localhost', 'starburger-vne.herokuapp.com'])
+ALLOWED_HOSTS = ['burger-em.online', 'burger-em.ru','143.244.206.73', '64.226.99.16', '127.0.0.1', 'localhost'] # env.list('ALLOWED_HOSTS', ['127.0.0.1', 'localhost', 'starburger-vne.herokuapp.com'])
 
 INSTALLED_APPS = [
     'foodcartapp.apps.FoodcartappConfig',
@@ -40,6 +40,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'rollbar.contrib.django.middleware.RollbarNotifierMiddlewareExcluding404'
 ]
 
 ROOT_URLCONF = 'star_burger.urls'
@@ -58,6 +59,13 @@ DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.logging.LoggingPanel',
     'debug_toolbar.panels.redirects.RedirectsPanel',
 ]
+
+ROLLBAR = {
+    'access_token': env('ROLLBAR_TOKEN'),
+    'environment': 'development' if DEBUG else 'production',
+    'branch': 'master',
+    'root': BASE_DIR,
+}
 
 TEMPLATES = [
     {
@@ -83,9 +91,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:////{0}'.format(os.path.join(BASE_DIR, 'db.sqlite3'))
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'starburger',
+        'USER': 'root',
+        'PASSWORD': env('DB_PASS'),
+        'HOST': 'localhost',
+        'PORT': '',
+    }
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -116,7 +129,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 INTERNAL_IPS = [
-    '127.0.0.1', 'starburger-vne.herokuapp.com'
+    '127.0.0.1',
 ]
 
 
