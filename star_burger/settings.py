@@ -2,7 +2,7 @@ import os
 import dj_database_url
 from environs import Env
 import psycopg2
-
+# HYIIIII
 env = Env()
 env.read_env()
 
@@ -97,6 +97,7 @@ WSGI_APPLICATION = 'star_burger.wsgi.application'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
 
 DATABASES = {
     'default': {
