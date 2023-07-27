@@ -148,3 +148,21 @@ Parcel будет следить за файлами в каталоге `bundle
 - `SECRET_KEY` — секретный ключ проекта. Он отвечает за шифрование на сайте. Например, им зашифрованы все пароли на вашем сайте.
 - `ALLOWED_HOSTS` — [см. документацию Django](https://docs.djangoproject.com/en/3.1/ref/settings/#allowed-hosts)
 
+## Автоматический деплой проекта
+
+Подключитесь к своему серверу и подготовьте его к работе скрипта:
+```
+# apt update
+# apt install python3-pip
+# pip3 install virtualenv
+```
+
+Выдайте права на исполнение скрипту
+```shell
+chmod ugo+x deploy_star_burger.sh
+```
+
+Запустите скрипт для автоматического деплоя:
+```shell
+./deploy_star_burger.sh
+```
