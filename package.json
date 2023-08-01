@@ -3,7 +3,6 @@
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@babel/preset-react": "^7.16.7",
     "core-js": "^3.21.1",
-    "latest": "^0.2.0",
     "lodash": "^4.17.21",
     "parcel": "^2.4.0",
     "react": "^17.0.2",
@@ -12,15 +11,6 @@
     "react-transition-group": "^4.4.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.8",
-    "process": "^0.11.10"
-  },
-  "engines": {
-    "node": "19.6.x"
-  },
-  "alias": {
-    "process": {
-      "global": "process"
-    }
+    "@babel/core": "^7.17.8"
   }
 }
