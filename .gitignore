@@ -158,8 +158,6 @@ Zz
 assets/
 .git/
 node_modules/
-.parcel-cache/
-bundles/
-bundles-src/
+
 staticfiles/
 
