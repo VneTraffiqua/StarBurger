@@ -21,7 +21,7 @@ npm ci --dev
 
 python manage.py collectstatic --noinput
 
-systemctl restart nginx
+systemctl reload nginx
 
 hash=$(git rev-parse HEAD)
 
