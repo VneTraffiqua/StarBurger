@@ -11,7 +11,7 @@ YANDEX_TOKEN = env('YANDEX_TOKEN')
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env.bool('DEBUG', False)
 
-ALLOWED_HOSTS = ['burger-em.online', 'burger-em.ru','143.244.206.73', '64.226.99.16', '127.0.0.1', 'localhost'] # env.list('ALLOWED_HOSTS', ['127.0.0.1', 'localhost', 'starburger-vne.herokuapp.com'])
+ALLOWED_HOSTS = ['burger-em.online', 'burger-em.ru', '143.244.206.73', '64.226.99.16', '127.0.0.1', 'localhost'] # env.list('ALLOWED_HOSTS', ['127.0.0.1', 'localhost', 'starburger-vne.herokuapp.com'])
 
 INSTALLED_APPS = [
     'foodcartapp.apps.FoodcartappConfig',
@@ -66,8 +66,8 @@ DEBUG_TOOLBAR_PANELS = [
 ]
 
 ROLLBAR = {
-    'access_token': env('ROLLBAR_TOKEN'),
-    'environment': 'development' if DEBUG else 'production',
+    'access_token': env('ROLLBAR_TOKEN', '111111111'),
+    'environment': env('ROLLBAR_ENVIROMENT', 'development'),
     'branch': 'master',
     'root': BASE_DIR,
 }
@@ -96,17 +96,24 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'starburger',
+#         'USER': 'root',
+#         'PASSWORD': env('DB_PASS'),
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'starburger',
-        'USER': 'root',
-        'PASSWORD': env('DB_PASS'),
-        'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': env.str(
+            'DATABASE_FILEPATH', os.path.join(BASE_DIR, 'db.sqlite3')),
     }
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
