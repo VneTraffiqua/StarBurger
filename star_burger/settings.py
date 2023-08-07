@@ -1,5 +1,7 @@
 import os
 from environs import Env
+import dj_database_url
+
 env = Env()
 env.read_env()
 
@@ -96,23 +98,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'starburger',
-#         'USER': 'root',
-#         'PASSWORD': env('DB_PASS'),
-#         'HOST': 'localhost',
-#         'PORT': '',
-#     }
-# }
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': env.str(
-            'DATABASE_FILEPATH', os.path.join(BASE_DIR, 'db.sqlite3')),
-    }
+    'default': dj_database_url.config(
+        default=env('DB_URL')
+    )
 }
 
 AUTH_PASSWORD_VALIDATORS = [
