@@ -160,4 +160,4 @@ assets/
 node_modules/
 
 staticfiles/
-
+db.sqlite3
