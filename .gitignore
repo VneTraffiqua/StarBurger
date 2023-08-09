@@ -161,3 +161,4 @@ node_modules/
 
 staticfiles/
 db.sqlite3
+.npm/
