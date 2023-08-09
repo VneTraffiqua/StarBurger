@@ -13,8 +13,12 @@ YANDEX_TOKEN = env('YANDEX_TOKEN')
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env.bool('DEBUG', False)
 
-ALLOWED_HOSTS = ['burger-em.online', 'burger-em.ru', '143.244.206.73', '64.226.99.16', '127.0.0.1', 'localhost'] # env.list('ALLOWED_HOSTS', ['127.0.0.1', 'localhost', 'starburger-vne.herokuapp.com'])
-
+ALLOWED_HOSTS = [
+    'burger-em.online', 'www.burger-em.online',
+    'burger-em.ru', 'www.burger-em.ru',
+    '143.244.206.73', '64.226.99.16',
+    '127.0.0.1', 'localhost'
+]
 INSTALLED_APPS = [
     'foodcartapp.apps.FoodcartappConfig',
     'restaurateur.apps.RestaurateurConfig',
