@@ -47,13 +47,6 @@ MIDDLEWARE = [
 
 ]
 
-ROLLBAR = {
-    'access_token': env('ROLLBAR_TOKEN', '111111111'),
-    'environment': env('ROLLBAR_ENVIROMENT', 'development'),
-    'code_version': '1.0',
-    'root': BASE_DIR,
-}
-
 ROOT_URLCONF = 'star_burger.urls'
 
 DEBUG_TOOLBAR_PANELS = [
@@ -72,7 +65,7 @@ DEBUG_TOOLBAR_PANELS = [
 ]
 
 ROLLBAR = {
-    'access_token': env('ROLLBAR_TOKEN', '111111111'),
+    'access_token': env('ROLLBAR_TOKEN', ''),
     'environment': env('ROLLBAR_ENVIROMENT', 'development'),
     'branch': 'master',
     'root': BASE_DIR,
