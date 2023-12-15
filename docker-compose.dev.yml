@@ -7,7 +7,7 @@ services:
     container_name: starburger_backend
 
     env_file:
-      - ./.env
+      - ./backend/.env
     depends_on:
       - frontend
     restart: always
@@ -26,7 +26,7 @@ services:
       context: ./frontend
     container_name: starburger_frontend
     env_file:
-      - ./.env
+      - ./backend/.env
     depends_on:
       - db
     restart: always
@@ -44,7 +44,7 @@ services:
     ports:
       - 5432:5432
     env_file:
-      - ./.env
+      - ./backend/.env
     restart: always
 
   nginx:
