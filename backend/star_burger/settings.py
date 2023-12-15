@@ -3,11 +3,11 @@ from environs import Env
 import dj_database_url
 
 env = Env()
-env.read_env(path='../.env')
+env.read_env(path='backend/.env')
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-YANDEX_TOKEN = env('YANDEX_TOKEN')
+YANDEX_TOKEN = env.str('YANDEX_TOKEN')
 
 
 SECRET_KEY = env('SECRET_KEY')
@@ -17,7 +17,7 @@ ALLOWED_HOSTS = [
     'burger-em.online', 'www.burger-em.online',
     'burger-em.ru', 'www.burger-em.ru',
     '143.244.206.73', '64.226.99.16',
-    '127.0.0.1', 'localhost', '127.0.0.0'
+    '127.0.0.1', 'localhost', '127.0.0.0', 
 ]
 INSTALLED_APPS = [
     'foodcartapp.apps.FoodcartappConfig',
