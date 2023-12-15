@@ -68,7 +68,6 @@ services:
   certbot:
     image: certbot/certbot:latest
     container_name: certbot
-    command: sh -c "certbot certonly --webroot --webroot-path /var/www/certbot/ --dry-run -d burger-em.ru"
     depends_on:
       - nginx
     volumes:
