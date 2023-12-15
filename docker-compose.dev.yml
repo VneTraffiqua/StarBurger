@@ -9,7 +9,7 @@ services:
     env_file:
       - ./.env
     depends_on:
-      - db
+      - frontend
     restart: always
     expose:
       - 8080
