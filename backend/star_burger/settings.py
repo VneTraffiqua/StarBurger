@@ -3,7 +3,7 @@ from environs import Env
 import dj_database_url
 
 env = Env()
-env.read_env(path='/root/StarBurger/.env')
+env.read_env(path='.env')
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
