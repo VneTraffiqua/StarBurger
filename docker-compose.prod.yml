@@ -65,7 +65,7 @@ services:
 
 
   certbot:
-    image: certbot/certbot
+    image: certbot/certbot:latest
     container_name: certbot
     depends_on: nginx
     volumes:
