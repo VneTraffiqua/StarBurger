@@ -60,6 +60,7 @@ services:
       - ./nginx/nginx_prod.conf:/etc/nginx/conf.d/default.conf
       - /etc/letsencrypt:/etc/letsencrypt
       - ./certbot/www/:/var/www/certbot/
+      - .well-known:/.well-known
     ports:
       - 80:80
       - 443:443
@@ -73,8 +74,10 @@ services:
     volumes:
       - ./certbot/www/:/var/www/certbot/:rw
       - ./certbot/conf/:/etc/letsencrypt/
+      - .well-known:/.well-known
 
 volumes:
+  .well-known:
   staticfiles:
   bundles:
   assets:
