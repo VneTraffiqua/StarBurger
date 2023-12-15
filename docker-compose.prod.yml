@@ -59,7 +59,7 @@ services:
       - media:/media
       - ./nginx/nginx_prod.conf:/etc/nginx/conf.d/default.conf
       - etc-letsencrypt:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot/:ro
+      - certbot-www:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/nginx/ssl/:ro
     ports:
       - 80:80
@@ -71,11 +71,12 @@ services:
     depends_on:
       - nginx
     volumes:
-      - ./certbot/www/:/var/www/certbot/:rw
+      - certbot-www:/var/www/certbot/:rw
       - etc-letsencrypt:/etc/letsencrypt
 
 volumes:
   etc-letsencrypt:
+  certbot-www:
   staticfiles:
   bundles:
   assets:
