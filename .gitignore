@@ -155,7 +155,7 @@ cython_debug/
 images/
 Zz
 
-assets/
+backend/assets/
 .git/
 node_modules/
 
@@ -163,5 +163,5 @@ staticfiles/
 db.sqlite3
 .npm/
 
-bundles/
+backend/bundles/
 .parcel-cache/
