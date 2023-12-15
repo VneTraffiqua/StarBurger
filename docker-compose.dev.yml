@@ -5,11 +5,11 @@ services:
     build:
       context: ./backend
     container_name: starburger_backend
-
+    command: sh -c "python manage.py migrate"
     env_file:
       - ./backend/.env
     depends_on:
-      - frontend
+      - db
     restart: always
     expose:
       - 8080
