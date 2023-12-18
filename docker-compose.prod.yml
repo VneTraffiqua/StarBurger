@@ -68,12 +68,13 @@ services:
   certbot:
     image: certbot/certbot:latest
     container_name: certbot
-    command: certonly --webroot --webroot-path=/var/www/certbot --dry-run --no-eff-email -d burger-em.ru -v
+    
     depends_on:
       - nginx
     volumes:
       - certbot-www:/var/www/certbot/:rw
       - etc-letsencrypt:/etc/letsencrypt
+      - ./certbot/conf/:/etc/nginx/ssl/
 
 volumes:
   etc-letsencrypt:
