@@ -19,6 +19,7 @@ ALLOWED_HOSTS = [
     '143.244.206.73', '64.226.99.16',
     '127.0.0.1', 'localhost', '127.0.0.0',
     'google.com', 'www.google-analytics.com',
+    'starburger', 
 ]
 INSTALLED_APPS = [
     'foodcartapp.apps.FoodcartappConfig',
