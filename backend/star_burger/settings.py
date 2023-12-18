@@ -18,8 +18,6 @@ ALLOWED_HOSTS = [
     'burger-em.ru', 'www.burger-em.ru',
     '143.244.206.73', '64.226.99.16',
     '127.0.0.1', 'localhost', '127.0.0.0',
-    'google.com', 'www.google-analytics.com',
-    'backend',
 ]
 INSTALLED_APPS = [
     'foodcartapp.apps.FoodcartappConfig',
